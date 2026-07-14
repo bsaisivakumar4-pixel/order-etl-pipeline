@@ -20,6 +20,7 @@ def run_pipeline():
 
     raw_df = extract()
     clean_df = transform(raw_df)
+    clean_df.to_csv("data/processed/clean_orders.csv", index=False)
     load(clean_df)
 
     elapsed = time.time() - start
