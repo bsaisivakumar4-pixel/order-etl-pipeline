@@ -4,3 +4,5 @@ __pycache__/
 warehouse.db
 data/raw/*.csv
 data/processed/*
+.DS_Store
+data/raw/online_retail_II.xlsx

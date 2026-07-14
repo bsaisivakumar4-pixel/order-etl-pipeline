@@ -27,8 +27,20 @@ def extract() -> pd.DataFrame:
     df = pd.read_csv(
         RAW_DATA_PATH,
         encoding="ISO-8859-1",   # this dataset has non-UTF8 characters in Description
-        dtype={"CustomerID": "string", "InvoiceNo": "string", "StockCode": "string"},
+        dtype={"Customer ID": "string", "Invoice": "string", "StockCode": "string"},
     )
+
+    # Rename columns to consistent, code-friendly names. The UCI dataset's
+    # column names have changed between versions/downloads (e.g. "Customer ID"
+    # vs "CustomerID") -- normalizing here means every downstream script
+    # only ever has to deal with ONE set of names, regardless of which raw
+    # file we were handed. Common real-world pattern: isolate messy source
+    # naming into the extract stage.
+    df = df.rename(columns={
+        "Invoice": "InvoiceNo",
+        "Price": "UnitPrice",
+        "Customer ID": "CustomerID",
+    })
 
     print(f"[extract] Loaded {len(df):,} raw rows from {RAW_DATA_PATH}")
     return df
