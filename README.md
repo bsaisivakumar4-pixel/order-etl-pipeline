@@ -116,3 +116,20 @@ Open each script and read the comments — they explain *why* each transformatio
 - SQLite Python docs: https://docs.python.org/3/library/sqlite3.html
 - UCI dataset description (data dictionary): https://archive.ics.uci.edu/dataset/502/online+retail+ii
 - Airflow "Getting started" (for when you're ready for step 4 above): https://airflow.apache.org/docs/apache-airflow/stable/start.html
+
+---
+
+## What I built and learned
+
+I built this as my first hands-on data engineering project, coming from a mainframe developer background. It's a small but complete ETL pipeline: extract raw retail transaction data, clean and transform it with pandas, load it into a SQL database, and query it for business insights.
+
+**What I learned:**
+- How to structure a pipeline into separate extract/transform/load stages, and why that separation matters (each stage can be tested and debugged independently)
+- Real-world data is messy — this dataset had cancelled orders, missing customer IDs, and non-product line items (like "Manual" adjustments and postage charges) mixed into the product data. Deciding what counts as "bad data" and handling it explicitly was most of the actual work.
+- Debugging a real schema mismatch: the dataset's column names didn't match what I expected (`Customer ID` vs `CustomerID`), which took some investigation to track down and fix at the extract stage so it wouldn't affect the rest of the pipeline.
+- Git workflow: committing incrementally as I built and fixed things, rather than one big commit at the end.
+
+**Next steps I'm planning:**
+- Add a separate customers table (basic dimensional modeling)
+- Swap SQLite for Postgres
+- Schedule the pipeline with Apache Airflow
