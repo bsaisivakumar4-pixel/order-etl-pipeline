@@ -28,6 +28,12 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
     # 3. Drop rows with non-positive quantity or price -- these are
     #    data entry errors or adjustments, not real sales.
     df = df[(df["Quantity"] > 0) & (df["UnitPrice"] > 0)]
+    # 3b. Drop non-product line items -- "Manual" and "POSTAGE" are
+    #     bookkeeping entries (manual price adjustments, shipping charges)
+    #     that got mixed into the same column as real products. Left in,
+    #     they'd distort any "top products" analysis.
+    non_products = ["Manual", "POSTAGE", "DOTCOM POSTAGE", "CARRIAGE"]
+    df = df[~df["Description"].isin(non_products)]
 
     # 4. Fix types -- InvoiceDate needs to be an actual datetime,
     #    not a string, or date-based queries won't work correctly.
